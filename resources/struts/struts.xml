@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<!-- 配置请求扩展名 -->
+	<constant name="struts.action.extension" value="html"></constant>
+	<package name="default" extends="struts-default" namespace="/">
+		<!-- 配置Action时，不能使用类的全限定名，而是必须使用IOC容器中bean的名称 -->
+		<action name="index" class="deptAction" method="index">
+			<result>/WEB-INF/jsp/index.jsp</result>
+		</action>
+		<action name="*Dept" class="deptAction" method="{1}Dept">
+			<result type="redirect">/queryDept.html</result>
+			<result name="query">/WEB-INF/jsp/dept/dept.jsp</result>
+			<result name="insert">/WEB-INF/jsp/dept/dept_insert.jsp</result>
+			<result name="update">/WEB-INF/jsp/dept/dept_update.jsp</result>
+		</action>
+		<action name="*Emp" class="empAction" method="{1}Emp">
+			<result type="redirect">/queryEmp.html</result>
+			<result name="query">/WEB-INF/jsp/emp/emp.jsp</result>
+			<result name="insert">/WEB-INF/jsp/emp/emp_insert.jsp</result>
+			<result name="update">/WEB-INF/jsp/emp/emp_update.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 引入其他的struts配置文件 -->
+	<include file="struts-default.xml"></include>
+	<include file="struts-plugin.xml"></include>
+</struts>

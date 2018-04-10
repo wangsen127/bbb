@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.ssh.entity.Emp" table="t_emp">
+		<id name="empno" column="empno">
+			<generator class="sequence">
+				<param name="sequence">ssh</param>
+			</generator>
+		</id>
+		<property name="ename" column="ename"></property>
+		<property name="job" column="job"></property>
+		<property name="mgr" column="mgr"></property>
+		<property name="hiredate" column="hiredate"></property>
+		<property name="sal" column="sal"></property>
+		<property name="comm" column="comm"></property>
+		<!-- 关系属性 -->
+		<many-to-one name="dept" class="com.ssh.entity.Dept" column="deptno"></many-to-one>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/util 
+	http://www.springframework.org/schema/util/spring-util.xsd
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx.xsd">
+	
+	<!-- 配置事务管理器 -->
+	<!-- hibenate事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<!-- 将SessionFactory独享注入到事务管理器中 -->
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<!-- 配置事务的属性 -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<!-- 根据方法指定事务的属性 -->
+		<tx:attributes>
+			<!-- 
+				name : 事务的方法名称，如果使用*，那么表示所有的方法
+			 -->
+			<tx:method name="insert*" propagation="REQUIRED" isolation="READ_COMMITTED" timeout="30"/>
+			<tx:method name="update*" propagation="REQUIRED" isolation="READ_COMMITTED" timeout="30"/>
+			<tx:method name="delete*" propagation="REQUIRED" isolation="READ_COMMITTED" timeout="30"/>
+			<tx:method name="query*" propagation="SUPPORTS" isolation="READ_COMMITTED" read-only="true" timeout="30"/>
+			<tx:method name="*" />
+		</tx:attributes>
+	</tx:advice>
+	
+	<!-- 配置事务切入点 -->
+	<aop:config>
+		<!-- 切点表达式，事务在哪些方法中应用 -->
+		<aop:pointcut expression="execution(* com.ssh.service.*Service.*(..))" id="exp"/>
+		<!-- 切点表达式与事务的联系 -->
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="exp"/>
+	</aop:config>
+	
+</beans>
